@@ -1,0 +1,6 @@
+{
+  "name": "eBook Interactivo UNEMI",
+  "description": "eBook educativo sobre las Unidades 1 y 2 que recopila conceptos clave, mapas mentales y lecciones aprendidas con la identidad de UNEMI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
