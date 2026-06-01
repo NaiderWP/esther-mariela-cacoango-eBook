@@ -28,11 +28,11 @@ import {
 import { TopicFormQR } from "./components/TopicFormQR";
 
 // Robust Logo Component that provides fallback rendering if logo_unemi.png fails or is empty
-function UnemiLogo({ className = "h-24" }: { className?: string }) {
+function UnemiLogo({ className = "h-24", align = "center" }: { className?: string, align?: "left" | "center" }) {
   const [hasError, ReactSetHasError] = React.useState(false);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center">
+    <div className={`flex flex-col ${align === "left" ? "items-start text-left" : "items-center text-center"} justify-center`}>
       {!hasError ? (
         <img
           src="/logo_unemi.png"
@@ -59,11 +59,11 @@ function DocumentSheet({ pageNumber, children }: DocumentSheetProps) {
   return (
     <section 
       id={`page-${pageNumber}`}
-      className="mx-auto my-6 max-w-[850px] min-h-[1100px] w-full bg-white border border-slate-200/80 shadow-md rounded-lg p-10 md:p-14 flex flex-col justify-between relative transition-all duration-300 print:my-0 print:border-none print:shadow-none print:p-8 print:min-h-screen"
+      className="mx-auto my-6 max-w-[850px] min-h-[1100px] w-full bg-white border border-slate-200/80 shadow-md rounded-lg py-10 px-[1in] md:py-14 flex flex-col justify-between relative transition-all duration-300 print:my-0 print:border-none print:shadow-none print:py-8 print:px-[1in] print:min-h-screen"
     >
-      {/* Page Header (Contains strictly the centered logo, with absolutely no text or icons around it) */}
-      <div className="w-full mb-4 flex justify-center border-b border-slate-100 pb-3">
-        <UnemiLogo className="h-6" />
+      {/* Page Header (Contains strictly the left-aligned logo, with absolutely no text or icons around it) */}
+      <div className="w-full mb-4 flex justify-start border-b border-slate-100 pb-3">
+        <UnemiLogo className="h-6" align="left" />
       </div>
 
       {/* Main Page Content */}
@@ -124,7 +124,7 @@ export default function App() {
         {/* SHEET 1: COVER PAGE IN A4 FORMAT */}
         <section 
           id="page-1"
-          className="mx-auto my-6 max-w-[850px] min-h-[1100px] w-full bg-white border border-slate-200/80 shadow-md rounded-lg px-12 md:px-16 py-16 flex flex-col justify-between relative transition-all duration-300 print:my-0 print:border-none print:shadow-none print:min-h-screen"
+          className="mx-auto my-6 max-w-[850px] min-h-[1100px] w-full bg-white border border-slate-200/80 shadow-md rounded-lg px-[1in] py-16 flex flex-col justify-between relative transition-all duration-300 print:my-0 print:border-none print:shadow-none print:px-[1in] print:min-h-screen"
         >
           {/* Top Decorative bar */}
           <div className="w-full h-1.5 bg-gradient-to-r from-[#004080] via-[#FF6600] to-[#004080] rounded-t-lg print:rounded-none" />
