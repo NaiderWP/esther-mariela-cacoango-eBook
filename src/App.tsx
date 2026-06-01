@@ -26,6 +26,7 @@ import {
   FigureFreeVsCommercial
 } from "./components/AcademicFigures";
 import { TopicFormQR } from "./components/TopicFormQR";
+import { ExternalResourceQR } from "./components/ExternalResourceQR";
 
 // Robust Logo Component that provides fallback rendering if logo_unemi.png fails or is empty
 function UnemiLogo({ className = "h-24", align = "center" }: { className?: string, align?: "left" | "center" }) {
@@ -125,77 +126,96 @@ export default function App() {
         <section 
           id="page-1"
           className="mx-auto my-6 max-w-[850px] min-h-[1100px] w-full bg-white border border-slate-200/80 shadow-md rounded-lg px-[1in] py-16 flex flex-col justify-between relative transition-all duration-300 print:my-0 print:border-none print:shadow-none print:px-[1in] print:min-h-screen"
+          style={{ 
+            backgroundImage: "url('/cover.png')", 
+            backgroundSize: "cover", 
+            backgroundPosition: "center", 
+            backgroundRepeat: "no-repeat" 
+          }}
         >
           {/* Top Decorative bar */}
           <div className="w-full h-1.5 bg-gradient-to-r from-[#004080] via-[#FF6600] to-[#004080] rounded-t-lg print:rounded-none" />
 
           {/* Central Block of Cover Page info */}
-          <div className="flex-1 flex flex-col justify-center items-center my-8 text-center">
+          <div className="flex-1 flex flex-col items-center pt-[0px] pb-4 w-full text-center">
             
-            {/* Main Logo Container */}
-            <div className="mb-10">
-              <UnemiLogo className="h-28" />
+            {/* Centered UNEMI Logo */}
+            <div className="mb-6 flex justify-center">
+              <UnemiLogo className="h-28 animate-fade-in" align="center" />
             </div>
 
-            <div className="w-16 h-1 bg-[#FF6600] mb-8" />
+            {/* Title & Subtitle Centered in a gorgeous translucent white box */}
+            <div className="flex flex-col items-center justify-center text-center w-full max-w-xl mb-8 bg-white/70 backdrop-blur-lg p-6 rounded-2xl border border-white/45 shadow-sm space-y-2.5">
+              <span className="text-[11px] uppercase font-extrabold tracking-widest text-[#FF6600] font-sans">
+                Curricular Working Reference Book
+              </span>
+              <h1 className="font-display font-black text-2xl md:text-3xl text-[#004080] tracking-tight leading-tight uppercase">
+                E-Learning – Trends & Challenges
+              </h1>
+            </div>
 
-            <span className="text-[11px] uppercase font-extrabold tracking-widest text-[#FF6600] mb-3 block">
-              Curricular Working Reference Book
-            </span>
+          </div>
 
-            {/* Centered Cover Title - Cleaned of icons */}
-            <h1 className="font-display font-black text-3xl md:text-4xl text-[#004080] tracking-tight leading-none uppercase mb-8 max-w-lg">
-              E-Learning – Trends & Challenges
-            </h1>
+          {/* Absolute Bottom-Left Metadata Strip - Touching the bottom and left borders perfectly */}
+          <div className="absolute bottom-0 left-0 bg-white border-t border-r border-slate-200/80 rounded-tr-3xl rounded-bl-lg p-6 pl-[1in] pr-8 flex items-center gap-5 text-left shadow-lg max-w-[590px] print:border-none print:shadow-none print:rounded-none select-none">
+            {/* Overlapping rounded design to one side */}
+            <div className="w-14 h-14 rounded-full bg-[#004080]/10 flex items-center justify-center text-xl text-[#004080] font-black shrink-0 relative border border-[#004080]/15 shadow-2xs">
+              <GraduationCap className="w-6 h-6 text-[#004080]" />
+              <div className="absolute -bottom-1 -right-1 w-5.5 h-5.5 rounded-full bg-[#FF6600] flex items-center justify-center text-[9px] text-white font-bold border-2 border-white shadow-2xs">
+                S
+              </div>
+            </div>
 
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 w-full max-w-lg space-y-4 shadow-xs">
+            {/* Grid content inside the stripe */}
+            <div className="flex-1 grid grid-cols-2 gap-x-6 gap-y-3 font-semibold text-slate-700">
               
-              <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold block">Official Course Units</span>
-                <p className="text-xs md:text-sm font-bold text-slate-700">
-                  Unit 1: Essential Aspects and Components of E-Learning <br />
-                  Unit 2: Main E-Learning Systems and Platforms
+              {/* Section 1: Official Course Units */}
+              <div className="space-y-0.5">
+                <span className="text-[9px] uppercase tracking-widest text-[#FF6600] font-extrabold block">
+                  Official Course Units
+                </span>
+                <p className="text-[10px] text-slate-800 leading-snug font-bold">
+                  Unit 1: Essential Aspects and Components <br />
+                  Unit 2: Main Systems and Platforms
                 </p>
               </div>
 
-              <div className="h-[1px] bg-slate-200 w-full" />
-
-              <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold block">Scientific Scope</span>
-                <p className="text-xs font-bold text-[#004080] uppercase tracking-wide">
+              {/* Section 2: Scientific Scope */}
+              <div className="space-y-0.5">
+                <span className="text-[9px] uppercase tracking-widest text-[#FF6600] font-extrabold block">
+                  Scientific Scope
+                </span>
+                <p className="text-[10px] text-slate-800 leading-snug font-bold">
                   Complete Curriculum including 21 Analytical Figures
                 </p>
               </div>
 
-              <div className="h-[1px] bg-slate-200 w-full" />
-
-              <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold block">Academic Lead / Tutor</span>
-                <p className="text-xs md:text-sm font-bold text-slate-700 flex items-center justify-center gap-1.5">
-                  <GraduationCap className="w-4 h-4 text-[#FF6600]" />
+              {/* Section 3: Academic Lead / Tutor */}
+              <div className="space-y-0.5">
+                <span className="text-[9px] uppercase tracking-widest text-[#FF6600] font-extrabold block">
+                  Academic Lead / Tutor
+                </span>
+                <p className="text-[10px] text-slate-800 flex items-center gap-1 leading-snug font-bold">
                   Mst. Jorge Zambrano Pachay
                 </p>
               </div>
 
-              <div className="h-[1px] bg-slate-200 w-full" />
-
-              <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold block">Student / Estudiante</span>
-                <p className="text-xs md:text-sm font-bold text-slate-700 flex items-center justify-center gap-1.5">
-                  <span className="w-4 h-4 rounded-full bg-[#004080]/10 flex items-center justify-center text-[10px] text-[#004080] font-bold shrink-0">S</span>
+              {/* Section 4: Student / Estudiante */}
+              <div className="space-y-0.5">
+                <span className="text-[9px] uppercase tracking-widest text-[#FF6600] font-extrabold block">
+                  Student / Estudiante
+                </span>
+                <p className="text-[10px] text-[#004080] flex items-center gap-1 leading-snug font-bold">
                   Esther Mariela Cacoango Cacoango
                 </p>
               </div>
-            </div>
 
-            <p className="text-xs text-slate-400 font-medium max-w-md leading-relaxed mt-12 bg-slate-50/50 p-3 rounded-lg border border-slate-100">
-              Formally translated and compiled under State University of Milagro Standards for autonomous educational reinforcement.
-            </p>
+            </div>
           </div>
 
           {/* Footer of the Cover page */}
-          <div className="w-full pt-4 border-t border-slate-100 flex items-center justify-end text-xs text-slate-400 font-bold bg-white">
-            <span className="font-mono bg-slate-50 px-3 py-1 rounded-md border border-slate-100 text-slate-600 font-semibold text-[10px]">
+          <div className="absolute bottom-6 right-[1in] flex items-center justify-end text-xs text-slate-400 font-bold bg-transparent">
+            <span className="font-mono bg-white/85 backdrop-blur-xs px-3 py-1 rounded-md border border-slate-200/50 text-slate-600 font-semibold text-[10px]">
               PAGE 1
             </span>
           </div>
@@ -339,6 +359,13 @@ export default function App() {
               <FigureConnectivism />
             </div>
 
+            <ExternalResourceQR 
+              label="L1.R1"
+              title="Conectivismo: Teoría del Aprendizaje Digital"
+              description="Video y guía teórica de University of Albany (KNILT) que detalla el flujo de conocimiento mediante nodos interactivos dentro de redes de aprendizaje modernas."
+              url="https://www.knilt.arcc.albany.edu/Connectivism_Learning_Theory"
+            />
+
             {/* Lessons Learned of Topic 1 section 1 */}
             <div className="bg-slate-50 border border-slate-150 p-3.5 rounded-xl text-xs text-slate-500 font-medium mt-2">
               <span className="text-[10px] uppercase font-bold text-[#004080] tracking-wider block mb-0.5">Topic Insight</span>
@@ -466,6 +493,13 @@ export default function App() {
               
               <FigureInstructorRoles />
             </div>
+
+            <ExternalResourceQR 
+              label="L1.R2"
+              title="Competencias Docentes Virtuales (CORT)"
+              description="Análisis práctico de Singapore Institute of Technology sobre las habilidades instruccionales, facilitación e interacción para instructores y tutores en línea."
+              url="https://www.singaporetech.edu.sg/sit-teaching-and-learning-academy/teaching-resources/tech-enhanced-learning/CORT"
+            />
 
             <TopicFormQR 
               topicId="U1T2"
@@ -613,6 +647,13 @@ export default function App() {
               
               <FigureSocialBehaviorRules />
             </div>
+
+            <ExternalResourceQR 
+              label="L1.R3"
+              title="Redes Sociales y Web 2.0 Académicas"
+              description="Clase magistral de Nova Southeastern University sobre el uso estratégico de redes y herramientas Web 2.0 como catalizadores de engagement y colaboración estudiantil."
+              url="https://sharkmedia.nova.edu/media/Getting+Started+with+Social+Media+and+Web+2.0+%28HD%29/1_3y01muf9/42646441"
+            />
 
             <TopicFormQR 
               topicId="U1T4"
