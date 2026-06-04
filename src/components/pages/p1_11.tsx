@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GraduationCap, Sparkles, AlertCircle, BookOpen, Clock, Users, ArrowRight } from "lucide-react";
 import { DocumentSheet, UnemiLogo } from "../DocumentSheet";
 import { 
@@ -12,6 +12,9 @@ import { TopicFormQR } from "../TopicFormQR";
 import MindMap from "../MindMap";
 
 export default function Page1_11({ onNavigate }: { onNavigate?: (pageNum: number) => void }) {
+  const [p9_q1, setP9_q1] = useState<string | null>(null);
+  const [p9_q2, setP9_q2] = useState<string | null>(null);
+  const [p9_verified, setP9_verified] = useState<boolean>(false);
   const indexPages = [
     // Preliminary
     { group: "preliminary", num: 1, label: "Individual Coursework Cover Sheet" },
@@ -51,9 +54,10 @@ export default function Page1_11({ onNavigate }: { onNavigate?: (pageNum: number
     { group: "unit2", num: 33, label: "Visual interactive collage of modular web applications" },
     { group: "unit2", num: 34, label: "Case reviews & final stakeholder interaction assessment" },
     { group: "unit2", num: 35, label: "SCORM systems & virtual software interoperability" },
+    { group: "unit2", num: 36, label: "Unit 2 comprehensive e-assessment & closing test" },
     // References
-    { group: "references", num: 36, label: "Academic bibliography & standard APA citations" },
-    { group: "references", num: 37, label: "Technical Glossary of terms & directory appendix" }
+    { group: "references", num: 37, label: "Academic bibliography & standard APA citations" },
+    { group: "references", num: 38, label: "Technical Glossary of terms & directory appendix" }
   ];
 
   return (
@@ -233,14 +237,14 @@ export default function Page1_11({ onNavigate }: { onNavigate?: (pageNum: number
               ))}
             </div>
 
-            {/* Column 2 (Pages 19 to 37) - Unit 1 (Part II), Unit 2 & Appendices */}
+            {/* Column 2 (Pages 19 to 38) - Unit 1 (Part II), Unit 2 & Appendices */}
             <div className="space-y-1 border-l border-slate-100 pl-8">
               <p className="font-extrabold text-[#FF6600] uppercase text-[9px] border-b border-[#FF6600]/15 pb-1 mb-1 tracking-wider">
                 Unit 1 Social Networks & Unit 2 Systems
               </p>
               
-              {/* Render pages 19 to 35 */}
-              {indexPages.slice(18, 35).map((item) => (
+              {/* Render pages 19 to 36 */}
+              {indexPages.slice(18, 36).map((item) => (
                 <button
                   key={item.num}
                   onClick={() => onNavigate?.(item.num)}
@@ -265,8 +269,8 @@ export default function Page1_11({ onNavigate }: { onNavigate?: (pageNum: number
                 References & Technical Appendices
               </p>
 
-              {/* Render references (pages 36 and 37) */}
-              {indexPages.slice(35).map((item) => (
+              {/* Render references (pages 37 and 38) */}
+              {indexPages.slice(36).map((item) => (
                 <button
                   key={item.num}
                   onClick={() => onNavigate?.(item.num)}
@@ -563,29 +567,135 @@ export default function Page1_11({ onNavigate }: { onNavigate?: (pageNum: number
           </div>
 
           <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-5 space-y-3.5 flex flex-col justify-between">
-            <span className="text-xs font-bold text-[#004080] uppercase tracking-wider block border-b border-slate-200 pb-1.5 flex items-center gap-1.5">
-              <Users className="w-4 h-4 text-[#004080]" />
-              Diagnostic Questionnaire — Topic 1
+            <span className="text-sm font-bold text-[#004080] uppercase tracking-wider block border-b border-slate-200 pb-1.5 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Users className="w-4.5 h-4.5 text-[#004080]" />
+                Diagnostic Questionnaire — Topic 1
+              </span>
+              {p9_verified && (
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-mono font-bold animate-pulse">
+                  Graded
+                </span>
+              )}
             </span>
 
-            <div className="space-y-3 text-[11px] text-slate-705 font-semibold leading-normal">
-              <div className="p-3 bg-white rounded-lg border border-slate-100 shadow-3xs">
-                <p className="font-bold text-slate-800 mb-1">Q1: Who formulated Connectivism as a learning theory for the digital era?</p>
-                <div className="grid grid-cols-2 gap-2 text-slate-505 pl-2 text-[10.5px]">
-                  <span>A) B.F. Skinner</span>
-                  <span className="text-[#004080] font-bold">B) George Siemens (Correct)</span>
-                  <span>C) Lev Vygotsky</span>
-                  <span>D) Jean Piaget</span>
+            <div className="space-y-3.5 text-[11px] text-slate-705 font-semibold leading-normal flex-1 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-3xs space-y-2">
+                  <p className="font-bold text-slate-800">Q1: Who formulated Connectivism as a learning theory for the digital era?</p>
+                  <div className="grid grid-cols-2 gap-2 text-[10px]">
+                    {[
+                      { id: "A", text: "B.F. Skinner" },
+                      { id: "B", text: "George Siemens", isCorrect: true },
+                      { id: "C", text: "Lev Vygotsky" },
+                      { id: "D", text: "Jean Piaget" }
+                    ].map((opt) => {
+                      const isSelected = p9_q1 === opt.id;
+                      let btnClass = "border text-left py-1.5 px-2.5 rounded-lg transition-all duration-200 ";
+                      if (p9_verified) {
+                        if (opt.isCorrect) {
+                          btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 font-bold shadow-3xs";
+                        } else if (isSelected) {
+                          btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        } else {
+                          btnClass += "opacity-50 bg-slate-50 border-slate-200 text-slate-400";
+                        }
+                      } else {
+                        btnClass += isSelected 
+                          ? "border-[#004080] bg-[#004080]/10 text-[#004080] ring-1 ring-[#004080]" 
+                          : "hover:bg-slate-50 border-slate-200 text-slate-650";
+                      }
+                      return (
+                        <button
+                          key={opt.id}
+                          disabled={p9_verified}
+                          onClick={() => setP9_q1(opt.id)}
+                          className={btnClass + " cursor-pointer relative font-medium"}
+                        >
+                          <span className="font-bold mr-1">{opt.id})</span> {opt.text}
+                          {p9_verified && opt.isCorrect && (
+                            <span className="absolute right-2 top-1.5 text-emerald-600 font-bold">✓</span>
+                          )}
+                          {p9_verified && isSelected && !opt.isCorrect && (
+                            <span className="absolute right-2 top-1.5 text-rose-600 font-bold">✗</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-3xs space-y-2">
+                  <p className="font-bold text-slate-800">Q2: What is the main benefit of formal ICT integration in universities?</p>
+                  <div className="grid grid-cols-1 gap-2 text-[10px]">
+                    {[
+                      { id: "A", text: "Completely replace teaching staff" },
+                      { id: "B", text: "Democratize access to education and flexibilize schedules", isCorrect: true },
+                      { id: "C", text: "Avoid face-to-face academic interactions entirely" }
+                    ].map((opt) => {
+                      const isSelected = p9_q2 === opt.id;
+                      let btnClass = "border text-left py-1.5 px-2.5 rounded-lg transition-all duration-200 ";
+                      if (p9_verified) {
+                        if (opt.isCorrect) {
+                          btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 font-bold shadow-3xs";
+                        } else if (isSelected) {
+                          btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        } else {
+                          btnClass += "opacity-50 bg-slate-50 border-slate-200 text-slate-400";
+                        }
+                      } else {
+                        btnClass += isSelected 
+                          ? "border-[#004080] bg-[#004080]/10 text-[#004080] ring-1 ring-[#004080]" 
+                          : "hover:bg-slate-50 border-slate-200 text-slate-650";
+                      }
+                      return (
+                        <button
+                          key={opt.id}
+                          disabled={p9_verified}
+                          onClick={() => setP9_q2(opt.id)}
+                          className={btnClass + " cursor-pointer relative font-medium"}
+                        >
+                          <span className="font-bold mr-1">{opt.id})</span> {opt.text}
+                          {p9_verified && opt.isCorrect && (
+                            <span className="absolute right-3 top-1.5 text-emerald-600 font-bold">✓</span>
+                          )}
+                          {p9_verified && isSelected && !opt.isCorrect && (
+                            <span className="absolute right-3 top-1.5 text-rose-600 font-bold">✗</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
-              <div className="p-3 bg-white rounded-lg border border-slate-100 shadow-3xs">
-                <p className="font-bold text-slate-800 mb-1">Q2: What is the main benefit of formal ICT integration in universities?</p>
-                <div className="grid grid-cols-1 gap-1 text-slate-550 pl-2 text-[10.5px]">
-                  <span>A) Completely replace teaching staff</span>
-                  <span className="text-[#004080] font-bold">B) Democratize access to education and flexibilize schedules (Correct)</span>
-                  <span>C) Avoid face-to-face academic interactions entirely</span>
-                </div>
+              {/* Action Bar */}
+              <div className="flex gap-2 justify-end pt-2 border-t border-slate-100">
+                {p9_verified ? (
+                  <button
+                    onClick={() => {
+                      setP9_q1(null);
+                      setP9_q2(null);
+                      setP9_verified(false);
+                    }}
+                    className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-1.5 px-4 rounded-lg text-[10px] shadow-3xs hover:shadow-2xs transition-all cursor-pointer font-mono"
+                  >
+                    Reset Quiz
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (p9_q1 && p9_q2) {
+                        setP9_verified(true);
+                      } else {
+                        alert("Please select answers to both questions first!");
+                      }
+                    }}
+                    className="bg-[#004080] hover:bg-[#003060] text-white font-bold py-1.5 px-4 rounded-lg text-[10px] shadow-3xs hover:shadow-2xs transition-all cursor-pointer font-mono"
+                  >
+                    Grade Quiz
+                  </button>
+                )}
               </div>
             </div>
           </div>

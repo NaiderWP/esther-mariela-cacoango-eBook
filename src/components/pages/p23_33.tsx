@@ -1,5 +1,5 @@
-import React from "react";
-import { GraduationCap, Award, CheckCircle, Database, Layout, BookOpen, UserCheck, Star, Sparkles, Book, ShieldCheck, Settings, Globe, Code } from "lucide-react";
+import React, { useState } from "react";
+import { GraduationCap, Award, CheckCircle, Database, Layout, BookOpen, UserCheck, Star, Sparkles, Book, ShieldCheck, Settings, Globe, Code, BrainCircuit } from "lucide-react";
 import { DocumentSheet } from "../DocumentSheet";
 import { 
   FigurePlatformFacts, 
@@ -17,6 +17,22 @@ import { ExternalResourceQR } from "../ExternalResourceQR";
 import MindMap from "../MindMap";
 
 export default function Page23_33({ onNavigate }: { onNavigate?: (pageNum: number) => void }) {
+  // Page 30 Questionnaire State
+  const [p30_q1, setP30_q1] = useState<string | null>(null);
+  const [p30_q2, setP30_q2] = useState<string | null>(null);
+  const [p30_verified, setP30_verified] = useState(false);
+
+  // Page 34 Questionnaire State
+  const [p34_q1, setP34_q1] = useState<string | null>(null);
+  const [p34_q2, setP34_q2] = useState<string | null>(null);
+  const [p34_verified, setP34_verified] = useState(false);
+
+  // Page 36 Unit 2 Comprehensive closing exam state
+  const [p36_q1, setP36_q1] = useState<string | null>(null);
+  const [p36_q2, setP36_q2] = useState<string | null>(null);
+  const [p36_q3, setP36_q3] = useState<string | null>(null);
+  const [p36_q4, setP36_q4] = useState<string | null>(null);
+  const [p36_verified, setP36_verified] = useState(false);
   return (
     <>
       {/* PAGE 26: DEDICATED MIND MAP - UNIT 2 SUMMARY */}
@@ -224,25 +240,103 @@ export default function Page23_33({ onNavigate }: { onNavigate?: (pageNum: numbe
 
           {/* Trends Questionnaire moved to the absolute bottom (full width) & translated to English */}
           <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-4.5 space-y-3 shadow-3xs mt-auto">
-            <span className="text-xs font-bold text-[#004080] uppercase tracking-wider block border-b border-slate-200 pb-1.5 flex items-center gap-1.5">
-              <Layout className="w-4 h-4 text-[#004080]" />
-              Trends Questionnaire — Topic 1
+            <span className="text-sm font-bold text-[#004080] uppercase tracking-wider block border-b border-slate-200 pb-1.5 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Layout className="w-4.5 h-4.5 text-[#004080]" />
+                Trends Questionnaire — Topic 1
+              </span>
+              {p30_verified && (
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-mono font-bold animate-pulse">
+                  Graded
+                </span>
+              )}
             </span>
 
-            <div className="grid grid-cols-2 gap-4 text-[10.5px] font-semibold text-slate-705 leading-normal">
-              <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-3xs">
-                <p className="font-bold text-slate-800 mb-1">Q1: What is the main conceptual difference between an LMS and an LXP?</p>
-                <p className="text-slate-500 font-semibold pl-1.5 text-[10px] leading-relaxed">
-                  <span className="text-[#004080] font-black">✔ LMS:</span> Institutionally controlled structure. <br/>
-                  <span className="text-[#004080] font-black">✔ LXP:</span> Learner-centric design with personalized, AI-driven recommendation channels.
-                </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[10.5px] font-semibold text-slate-705 leading-normal">
+              {/* Q1 */}
+              <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-3xs space-y-2">
+                <p className="font-bold text-slate-800">Q1: What is the main conceptual difference between an LMS and an LXP?</p>
+                <div className="flex flex-col gap-1.5 text-[9.5px]">
+                  {[
+                    { id: "A", text: "LMS utilizes no databases, LXP has only server nodes" },
+                    { id: "B", text: "LMS is admin-driven / structured, LXP is user-centric", isCorrect: true },
+                    { id: "C", text: "LMS is local only, LXP is exclusively written for mobile" }
+                  ].map((opt) => {
+                    const isSelected = p30_q1 === opt.id;
+                    let btnClass = "border text-left py-1.5 px-2 rounded-lg transition-all duration-150 ";
+                    if (p30_verified) {
+                      if (opt.isCorrect) btnClass += "bg-emerald-55 bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                      else if (isSelected) btnClass += "bg-rose-50 border-rose-450 text-rose-800 border-rose-400";
+                      else btnClass += "opacity-50 text-slate-400 border-slate-100";
+                    } else {
+                      btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-650";
+                    }
+                    return (
+                      <button key={opt.id} disabled={p30_verified} onClick={() => setP30_q1(opt.id)} className={btnClass + " cursor-pointer relative"}>
+                        <span>{opt.id}) {opt.text}</span>
+                        {p30_verified && opt.isCorrect && <span className="absolute right-2 top-1.5 text-emerald-600">✓</span>}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-3xs">
-                <p className="font-bold text-slate-800 mb-1">Q2: Which educational trend proposes short-duration, bite-sized learning objects?</p>
-                <p className="text-slate-505 font-semibold pl-1.5 text-[10.5px]">
-                  <span className="text-[#004080] font-black">✔ Microlearning (Self-contained, bite-sized autonomous lectures).</span>
-                </p>
+              {/* Q2 */}
+              <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-3xs space-y-2 flex flex-col justify-between">
+                <div>
+                  <p className="font-bold text-slate-800 mb-1">Q2: Which educational trend proposes short-duration, bite-sized learning objects?</p>
+                  <div className="flex flex-col gap-1.5 text-[9.5px]">
+                    {[
+                      { id: "A", text: "Microlearning (Self-contained, bite-sized lessons)", isCorrect: true },
+                      { id: "B", text: "Traditional synchronous lecturing and summaries" },
+                      { id: "C", text: "Technical system database modeling sessions" }
+                    ].map((opt) => {
+                      const isSelected = p30_q2 === opt.id;
+                      let btnClass = "border text-left py-1.5 px-2 rounded-lg transition-all duration-150 ";
+                      if (p30_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-55 bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-450 text-rose-800 border-rose-400";
+                        else btnClass += "opacity-50 text-slate-400 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-650";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p30_verified} onClick={() => setP30_q2(opt.id)} className={btnClass + " cursor-pointer relative"}>
+                          <span>{opt.id}) {opt.text}</span>
+                          {p30_verified && opt.isCorrect && <span className="absolute right-2 top-1.5 text-emerald-600">✓</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Submit action panel */}
+                <div className="flex gap-2 justify-end pt-2 select-none">
+                  {p30_verified ? (
+                    <button
+                      onClick={() => {
+                        setP30_q1(null); setP30_q2(null);
+                        setP30_verified(false);
+                      }}
+                      className="bg-slate-700 hover:bg-slate-850 text-white font-mono font-bold py-1 px-3 rounded-lg text-[9.5px] cursor-pointer"
+                    >
+                      Reset Quiz
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        if (p30_q1 && p30_q2) {
+                          setP30_verified(true);
+                        } else {
+                          alert("Please select answers to both questions first!");
+                        }
+                      }}
+                      className="bg-[#004080] hover:bg-[#003060] text-white font-mono font-bold py-1 px-3 rounded-lg text-[9.5px] cursor-pointer"
+                    >
+                      Grade Quiz
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -369,23 +463,102 @@ export default function Page23_33({ onNavigate }: { onNavigate?: (pageNum: numbe
 
           {/* Stakeholder Questionnaire moved to bottom (full width) & translated to English */}
           <div className="bg-white border border-slate-200 rounded-2xl p-4.5 space-y-3 shadow-3xs mt-auto">
-            <span className="text-xs font-bold text-[#004080] uppercase tracking-wider block border-b border-slate-100 pb-1 flex items-center gap-1.5">
-              <UserCheck className="w-4 h-4 text-[#004080]" />
-              Stakeholder Questionnaire — Topic 2
+            <span className="text-sm font-bold text-[#004080] uppercase tracking-wider block border-b border-slate-100 pb-1 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <UserCheck className="w-4.5 h-4.5 text-[#004080]" />
+                Stakeholder Questionnaire — Topic 2
+              </span>
+              {p34_verified && (
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-mono font-bold animate-pulse">
+                  Graded
+                </span>
+              )}
             </span>
 
-            <div className="grid grid-cols-2 gap-4 text-[10.5px] font-semibold text-slate-600 leading-normal">
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                <p className="font-bold text-slate-800 mb-1">Q1: Who is technically responsible for configuring database schemas and integrating third-party APIs?</p>
-                <div className="pl-2.5">
-                  <span className="text-[#004080] font-bold">✔ The System Administrator.</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[10.5px] font-semibold text-slate-605 leading-normal">
+              {/* Q1 */}
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-2">
+                <p className="font-bold text-slate-800">Q1: Who is technically responsible for configuring database schemas and integrating third-party APIs?</p>
+                <div className="flex flex-col gap-1.5 text-[9.5px]">
+                  {[
+                    { id: "A", text: "Head Dean / Faculty Board" },
+                    { id: "B", text: "System Administrator", isCorrect: true },
+                    { id: "C", text: "Student Representative" }
+                  ].map((opt) => {
+                    const isSelected = p34_q1 === opt.id;
+                    let btnClass = "border text-left py-1.5 px-2 rounded-lg transition-all duration-150 ";
+                    if (p34_verified) {
+                      if (opt.isCorrect) btnClass += "bg-emerald-55 bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                      else if (isSelected) btnClass += "bg-rose-50 border-rose-450 text-rose-800 border-rose-400";
+                      else btnClass += "opacity-50 text-slate-400 border-slate-100";
+                    } else {
+                      btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-655";
+                    }
+                    return (
+                      <button key={opt.id} disabled={p34_verified} onClick={() => setP34_q1(opt.id)} className={btnClass + " cursor-pointer relative"}>
+                        <span>{opt.id}) {opt.text}</span>
+                        {p34_verified && opt.isCorrect && <span className="absolute right-2 top-1.5 text-emerald-600">✓</span>}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                <p className="font-bold text-slate-800 mb-1">Q2: Which engagement factor is designed to reduce student isolation and boost motivation?</p>
-                <div className="pl-2.5">
-                  <span className="text-[#004080] font-bold">✔ Interactive fast feedback loops and authentic instructor presence.</span>
+              {/* Q2 */}
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-2 flex flex-col justify-between">
+                <div>
+                  <p className="font-bold text-slate-800 mb-1">Q2: Which engagement factor is designed to reduce student isolation and boost motivation?</p>
+                  <div className="flex flex-col gap-1.5 text-[9.5px]">
+                    {[
+                      { id: "A", text: "Simple static reading files with print layouts" },
+                      { id: "B", text: "Interactive fast feedback loops & tutor presence", isCorrect: true },
+                      { id: "C", text: "Closing course forums completely for data privacy" }
+                    ].map((opt) => {
+                      const isSelected = p34_q2 === opt.id;
+                      let btnClass = "border text-left py-1.5 px-2 rounded-lg transition-all duration-150 ";
+                      if (p34_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-55 bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-450 text-rose-800 border-rose-400";
+                        else btnClass += "opacity-50 text-slate-400 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-655";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p34_verified} onClick={() => setP34_q2(opt.id)} className={btnClass + " cursor-pointer relative"}>
+                          <span>{opt.id}) {opt.text}</span>
+                          {p34_verified && opt.isCorrect && <span className="absolute right-2 top-1.5 text-emerald-600">✓</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Buttons interface */}
+                <div className="flex gap-2 justify-end pt-1 select-none">
+                  {p34_verified ? (
+                    <button
+                      onClick={() => {
+                        setP34_q1(null); setP34_q2(null);
+                        setP34_verified(false);
+                      }}
+                      className="bg-slate-700 hover:bg-slate-850 text-white font-mono font-bold py-1 px-3 rounded-lg text-[9.5px] cursor-pointer"
+                    >
+                      Reset Quiz
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        if (p34_q1 && p34_q2) {
+                          setP34_verified(true);
+                        } else {
+                          alert("Please select answers to both questions first!");
+                        }
+                      }}
+                      className="bg-[#004080] hover:bg-[#003060] text-white font-mono font-bold py-1 px-3 rounded-lg text-[9.5px] cursor-pointer"
+                    >
+                      Grade Quiz
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -422,8 +595,193 @@ export default function Page23_33({ onNavigate }: { onNavigate?: (pageNum: numbe
         </div>
       </DocumentSheet>
 
-      {/* PAGE 36: APPENDIX SECTION I: ACADEMIC BIBLIOGRAPHY (BRAND NEW RE-DESIGNED FULL PAGE) */}
+      {/* PAGE 36: UNIT 2 COMPREHENSIVE E-ASSESSMENT & CLOSING TEST (BRAND NEW STRIPED RESPONSIVE WORK) */}
       <DocumentSheet pageNumber={36}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch pt-1">
+          <div className="space-y-4 flex flex-col justify-between">
+            <div className="space-y-1">
+              <span className="text-[9px] uppercase font-mono font-bold tracking-widest text-[#FF6600]">Unit 2 • Platform Core Closing</span>
+              <h2 className="text-base font-display font-bold text-[#004080] uppercase tracking-tight">
+                Interactive Form QRs & Unit 2 Closing Exam
+              </h2>
+              <p className="text-slate-600 text-xs leading-[1.75] font-semibold text-slate-500">
+                To validate lessons from Unit 2 (LMS, LXP, SCORM, and gamification), scan the digital form or answer the multi-choice exam options directly on this sheet.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 bg-slate-50/50 p-2.5 rounded-2xl border border-slate-150">
+              <ExternalResourceQR 
+                label="L2.R3"
+                title="SCORM & ADL Guidelines"
+                description="Official standards specifications and reference guides from the Advanced Distributed Learning Initiative team."
+                url="https://adlnet.gov/projects/scorm/"
+                compact={true}
+              />
+
+              <TopicFormQR 
+                topicId="U2T3"
+                title="Topic 2.3 Reading Form"
+                description="Final diagnostic exam covering SCORM standard structures, licensing types, and open-source deployments."
+                url="https://docs.google.com/forms/d/e/1FAIpQLScD5_8Qyvj4R0G_FBeR7Xun_P9_79M6-N_eP1iTj7S9W_zXpP7pQ/viewform"
+                compact={true}
+              />
+            </div>
+          </div>
+
+          <div className="bg-[#004080]/5 border border-[#004080]/15 rounded-2xl p-4.5 space-y-3 flex flex-col justify-between">
+            <span className="text-sm font-bold text-[#004080] uppercase tracking-wider block border-b border-[#004080]/15 pb-1 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <BrainCircuit className="w-4.5 h-4.5 text-[#004080]" />
+                Unit 2 Comprehensive Exam
+              </span>
+              {p36_verified && (
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-mono font-bold animate-pulse">
+                  Graded
+                </span>
+              )}
+            </span>
+
+            <div className="space-y-2 text-[10px] font-semibold leading-normal flex-1 flex flex-col justify-between">
+              <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+                {/* Q1 */}
+                <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-3xs space-y-1.5">
+                  <p className="font-bold text-slate-800">Q1: What defines the primary difference between LMS & LXP?</p>
+                  <div className="grid grid-cols-2 gap-1.5 text-[9px]">
+                    {[
+                      { id: "A", text: "LMS is local only" },
+                      { id: "B", text: "LMS is admin-driven, LXP is user-centric", isCorrect: true }
+                    ].map((opt) => {
+                      const isSelected = p36_q1 === opt.id;
+                      let btnClass = "border py-1 px-1.5 rounded text-left transition-all duration-150 font-medium ";
+                      if (p36_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        else btnClass += "opacity-50 text-slate-450 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-600";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p36_verified} onClick={() => setP36_q1(opt.id)} className={btnClass + " cursor-pointer"}>
+                          <span>{opt.id}) {opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Q2 */}
+                <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-3xs space-y-1.5">
+                  <p className="font-bold text-slate-800">Q2: Which standard secures e-learning module interoperability?</p>
+                  <div className="grid grid-cols-2 gap-1.5 text-[9px]">
+                    {[
+                      { id: "A", text: "SCORM standard specs", isCorrect: true },
+                      { id: "B", text: "LAN router protocols" }
+                    ].map((opt) => {
+                      const isSelected = p36_q2 === opt.id;
+                      let btnClass = "border py-1 px-1.5 rounded text-left transition-all duration-150 font-medium ";
+                      if (p36_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        else btnClass += "opacity-50 text-slate-450 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-600";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p36_verified} onClick={() => setP36_q2(opt.id)} className={btnClass + " cursor-pointer"}>
+                          <span>{opt.id}) {opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Q3 */}
+                <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-3xs space-y-1.5">
+                  <p className="font-bold text-slate-800">Q3: What is the main objective of LMS gamification?</p>
+                  <div className="grid grid-cols-2 gap-1.5 text-[9px]">
+                    {[
+                      { id: "A", text: "Replace syllabus completely" },
+                      { id: "B", text: "Boost student engagement", isCorrect: true }
+                    ].map((opt) => {
+                      const isSelected = p36_q3 === opt.id;
+                      let btnClass = "border py-1 px-1.5 rounded text-left transition-all duration-150 font-medium ";
+                      if (p36_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        else btnClass += "opacity-50 text-slate-450 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-600";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p36_verified} onClick={() => setP36_q3(opt.id)} className={btnClass + " cursor-pointer"}>
+                          <span>{opt.id}) {opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Q4 */}
+                <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-3xs space-y-1.5">
+                  <p className="font-bold text-slate-800">Q4: Who is structurally responsible for tracking user grades?</p>
+                  <div className="grid grid-cols-2 gap-1.5 text-[9px]">
+                    {[
+                      { id: "A", text: "Course Instructor / Tutor", isCorrect: true },
+                      { id: "B", text: "Database designer" }
+                    ].map((opt) => {
+                      const isSelected = p36_q4 === opt.id;
+                      let btnClass = "border py-1 px-1.5 rounded text-left transition-all duration-150 font-medium ";
+                      if (p36_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        else btnClass += "opacity-50 text-slate-450 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-600";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p36_verified} onClick={() => setP36_q4(opt.id)} className={btnClass + " cursor-pointer"}>
+                          <span>{opt.id}) {opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Bar */}
+              <div className="flex gap-2 justify-end pt-1 select-none">
+                {p36_verified ? (
+                  <button
+                    onClick={() => {
+                      setP36_q1(null); setP36_q2(null); setP36_q3(null); setP36_q4(null);
+                      setP36_verified(false);
+                    }}
+                    className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-1 px-3 rounded-lg text-[9px] shadow-3xs cursor-pointer font-mono"
+                  >
+                    Reset Exam
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (p36_q1 && p36_q2 && p36_q3 && p36_q4) {
+                        setP36_verified(true);
+                      } else {
+                        alert("Please select answers to all 4 questions first!");
+                      }
+                    }}
+                    className="bg-[#004080] hover:bg-[#003060] text-white font-bold py-1 px-3 rounded-lg text-[9px] shadow-3xs cursor-pointer font-mono"
+                  >
+                    Submit & Grade
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </DocumentSheet>
+
+      {/* PAGE 37: APPENDIX SECTION I: ACADEMIC BIBLIOGRAPHY (BRAND NEW RE-DESIGNED FULL PAGE) */}
+      <DocumentSheet pageNumber={37}>
         <div className="space-y-4 h-full flex flex-col justify-between">
           <div className="space-y-0.5 border-b border-[#004080]/15 pb-1 flex justify-between items-end">
             <div>
@@ -438,25 +796,25 @@ export default function Page23_33({ onNavigate }: { onNavigate?: (pageNum: numbe
             <span className="text-[10px] text-slate-400 font-mono font-bold">Scientific Repository</span>
           </div>
 
-          <p className="text-slate-600 text-xs leading-[1.8] font-semibold text-slate-450">
+          <p className="text-slate-650 text-xs leading-[1.8] font-[#004080] font-semibold">
             Sustained higher education handbooks require backing by recent academic research. The following scientific citations have informed both Unit 1 and Unit 2 lessons:
           </p>
 
-          <div className="grid grid-cols-1 gap-3 text-[11px] text-slate-700 font-semibold italic bg-slate-50/50 border border-slate-100 rounded-2xl p-5 leading-relaxed shadow-3xs flex-1 justify-center">
+          <div className="grid grid-cols-1 gap-3 text-[11px] text-slate-705 font-bold italic bg-slate-50/50 border border-slate-100 rounded-2xl p-5 leading-relaxed shadow-3xs flex-1 justify-center">
             <p>
-              • Greenhow, C., & Askari, E. (2017). Learning and teaching with social network sites: A decade of research in K-12 and tertiary education. <span className="font-bold text-[#004080] not-italic">Interactive Learning Environments</span>, 25(5), 623-645.
+              • Greenhow, C., & Askari, E. (2017). Learning and teaching with social network sites: A decade of research in K-12 and tertiary education. <span className="font-bold text-[#004080] not-italic text-slate-600">Interactive Learning Environments</span>, 25(5), 623-645.
             </p>
             <p>
-              • Siemens, G. (2005). Connectivism: A learning theory for the digital age. <span className="font-bold text-[#004080] not-italic">International Journal of Instructional Technology and Distance Learning</span>, 2(1), 3-10.
+              • Siemens, G. (2005). Connectivism: A learning theory for the digital age. <span className="font-bold text-[#004080] not-italic text-slate-600">International Journal of Instructional Technology and Distance Learning</span>, 2(1), 3-10.
             </p>
             <p>
-              • Tosun, M. (2018). Taxonomic classification of digital e-learning tools inside active high-education setups. <span className="font-bold text-[#004080] not-italic">Turkish Journal of Educational Technology</span>, 17(3), 88-99.
+              • Tosun, M. (2018). Taxonomic classification of digital e-learning tools inside active high-education setups. <span className="font-bold text-[#004080] not-italic text-slate-600">Turkish Journal of Educational Technology</span>, 17(3), 88-99.
             </p>
             <p>
-              • UNESCO (2018). <span className="font-bold text-[#FF6600] not-italic">ICT Competency Framework for Teachers (ICT-CFT)</span>, Version 3. UNESCO Publishing, Paris, France.
+              • UNESCO (2018). <span className="font-bold text-[#FF6600] not-italic text-slate-600">ICT Competency Framework for Teachers (ICT-CFT)</span>, Version 3. UNESCO Publishing, Paris, France.
             </p>
             <p>
-              • Zambrano-Pachay, J. (2024). Modalities design dynamics inside UNEMI virtual systems. <span className="font-bold text-[#004080] not-italic">State University of Milagro Publishing</span>, Milagro, Ecuador.
+              • Zambrano-Pachay, J. (2024). Modalities design dynamics inside UNEMI virtual systems. <span className="font-bold text-[#004080] not-italic text-slate-600">State University of Milagro Publishing</span>, Milagro, Ecuador.
             </p>
           </div>
 
@@ -466,8 +824,8 @@ export default function Page23_33({ onNavigate }: { onNavigate?: (pageNum: numbe
         </div>
       </DocumentSheet>
 
-      {/* PAGE 37: APPENDIX SECTION II: TECHNICAL GLOSSARY & HANDBOOK ANNEXES (BRAND NEW RE-DESIGNED FULL PAGE INTERNALLY TRANSLATED TO ENGLISH) */}
-      <DocumentSheet pageNumber={37}>
+      {/* PAGE 38: APPENDIX SECTION II: TECHNICAL GLOSSARY & HANDBOOK ANNEXES (BRAND NEW RE-DESIGNED FULL PAGE INTERNALLY TRANSLATED TO ENGLISH) */}
+      <DocumentSheet pageNumber={38}>
         <div className="space-y-4 h-full flex flex-col justify-between">
           <div className="space-y-0.5 border-b border-[#FF6600]/15 pb-1 flex justify-between items-end">
             <div>
@@ -482,7 +840,7 @@ export default function Page23_33({ onNavigate }: { onNavigate?: (pageNum: numbe
             <span className="text-[10px] text-slate-400 font-mono font-bold">Concept Terminology</span>
           </div>
 
-          <p className="text-slate-605 text-xs leading-[1.8] font-semibold text-slate-500">
+          <p className="text-slate-650 text-xs leading-[1.8] font-[#004080] font-semibold">
             Review detailed definitions of technical terms and systems components implemented inside virtual paradigms:
           </p>
 

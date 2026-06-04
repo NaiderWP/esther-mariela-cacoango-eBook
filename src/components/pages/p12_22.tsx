@@ -1,5 +1,5 @@
-import React from "react";
-import { Sparkles, HelpCircle, HardDrive, AlertCircle, BookOpen, Globe, Compass, ShieldAlert, Users, Layers, Layout, Share2, Shield, Settings, Info } from "lucide-react";
+import React, { useState } from "react";
+import { Sparkles, HelpCircle, HardDrive, AlertCircle, BookOpen, Globe, Compass, ShieldAlert, Users, Layers, Layout, Share2, Shield, Settings, Info, CheckCircle, BrainCircuit } from "lucide-react";
 import { DocumentSheet } from "../DocumentSheet";
 import { 
   FigurePortalStructure, 
@@ -14,6 +14,16 @@ import { ExternalResourceQR } from "../ExternalResourceQR";
 import MindMap from "../MindMap";
 
 export default function Page12_22({ onNavigate }: { onNavigate?: (pageNum: number) => void }) {
+  // Page 14 Case Study State
+  const [p14_choice, setP14_choice] = useState<string | null>(null);
+  const [p14_verified, setP14_verified] = useState(false);
+
+  // Page 24 Comprehensive Unit 1 closing quiz state
+  const [p24_q1, setP24_q1] = useState<string | null>(null);
+  const [p24_q2, setP24_q2] = useState<string | null>(null);
+  const [p24_q3, setP24_q3] = useState<string | null>(null);
+  const [p24_q4, setP24_q4] = useState<string | null>(null);
+  const [p24_verified, setP24_verified] = useState(false);
   return (
     <>
       {/* PAGE 14: UNIT 1 • TOPIC 2 ASSESSMENT — CONTENT SHEET #10 (SHIFTED & BALANCED LAYOUT) */}
@@ -50,23 +60,104 @@ export default function Page12_22({ onNavigate }: { onNavigate?: (pageNum: numbe
           </div>
 
           {/* Right column: Actionable Academic Case study */}
-          <div className="bg-[#004080]/5 border border-[#004080]/15 rounded-2xl p-5 space-y-3 flex flex-col justify-between h-full">
+          <div className="bg-[#004080]/5 border border-[#004080]/15 rounded-2xl p-5 space-y-3.5 flex flex-col justify-between h-full">
             <div className="space-y-1.5">
-              <span className="text-[10px] uppercase font-bold text-[#004080] tracking-wider block border-b border-[#004080]/10 pb-1 flex items-center gap-1.5">
-                <Users className="w-4 h-4 text-[#004080]" />
-                Classroom Case File: The Passive Online Learner
+              <span className="text-sm font-bold text-[#004080] uppercase tracking-wider block border-b border-[#004080]/15 pb-1.5 flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Users className="w-4.5 h-4.5 text-[#004080]" />
+                  Class Case study: Passive Learner
+                </span>
+                {p14_verified && (
+                  <span className="text-[9px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-mono font-bold animate-pulse">
+                    Solved
+                  </span>
+                )}
               </span>
-              <p className="text-slate-605 italic text-[11px] leading-relaxed font-semibold">
+              <p className="text-slate-600 italic text-[10.5px] leading-relaxed font-semibold p-2 bg-white/40 rounded-xl border border-slate-100 shadow-3xs">
                 "An educator observes a student who frequently logs in to download study PDFs but has not posted in any group forums or submitted the initial assignments. The course relies heavily on cooperative learning."
               </p>
             </div>
 
-            <div className="space-y-2 pt-2 border-t border-[#004080]/10">
-              <span className="text-[9.5px] uppercase font-black tracking-widest text-[#FF6600] block">Assessment Options & Rationale</span>
-              <div className="space-y-2 text-[10.5px] text-slate-700 font-semibold leading-relaxed">
-                <p><strong>Option A (Aministrator Response):</strong> Overwrite grades to zero and process an automated warning report to registrar offices without direct counseling.</p>
-                <p className="text-[#004080] font-bold"><strong>Option B (The Multi-Role Advisor Response - Correct):</strong> Access LMS database metrics, email the student a friendly, supportive note, and schedule a 5-minute virtual check-in to identify and resolve systemic bottlenecks.</p>
+            <div className="space-y-3 pt-2">
+              <span className="text-[9.5px] uppercase font-black tracking-widest text-[#FF6600] block mb-1">Assessment Options & Rationale</span>
+              <div className="space-y-2 text-slate-700 font-semibold leading-relaxed">
+                {[
+                  {
+                    id: "A",
+                    label: "Option A (Administrator Mode)",
+                    text: "Overwrite grades to zero and process an automated warning report to registrar offices without direct counseling.",
+                    isCorrect: false,
+                    rationale: "Incorrect. Taking punitive actions without tutoring first bypasses the essential advisory role of the instructor."
+                  },
+                  {
+                    id: "B",
+                    label: "Option B (Multi-Role Advisor)",
+                    text: "Access LMS database metrics, email the student a friendly, supportive note, and schedule a 5-minute virtual check-in to identify and resolve systemic bottlenecks.",
+                    isCorrect: true,
+                    rationale: "Correct! The advisor must check server metrics and establish human contact to resolve learning bottlenecks."
+                  }
+                ].map((opt) => {
+                  const isSelected = p14_choice === opt.id;
+                  let cardClass = "p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer text-[10px] ";
+                  if (p14_verified) {
+                    if (opt.isCorrect) {
+                      cardClass += "bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                    } else if (isSelected) {
+                      cardClass += "bg-rose-50 border-rose-400 text-rose-800";
+                    } else {
+                      cardClass += "opacity-55 bg-slate-50 border-slate-150 text-slate-400";
+                    }
+                  } else {
+                    cardClass += isSelected
+                      ? "bg-white border-[#004080] ring-1 ring-[#004080] shadow-3xs"
+                      : "bg-white hover:bg-slate-50 border-slate-200 text-slate-600";
+                  }
+
+                  return (
+                    <button
+                      key={opt.id}
+                      disabled={p14_verified}
+                      onClick={() => setP14_choice(opt.id)}
+                      className={cardClass + " w-full font-medium relative block"}
+                    >
+                      <div className="font-extrabold text-[#004080] mb-0.5">{opt.label}</div>
+                      <div>{opt.text}</div>
+                      {p14_verified && isSelected && (
+                        <div className="mt-1.5 text-[9.5px] border-t pt-1 font-semibold block text-slate-500">
+                          {opt.rationale}
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2 border-t border-[#004080]/10">
+              {p14_verified ? (
+                <button
+                  onClick={() => {
+                    setP14_choice(null);
+                    setP14_verified(false);
+                  }}
+                  className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-1 px-3 rounded-lg text-[10px] font-mono cursor-pointer"
+                >
+                  Reset Case
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    if (p14_choice) {
+                      setP14_verified(true);
+                    } else {
+                      alert("Please select an option first!");
+                    }
+                  }}
+                  className="bg-[#004080] hover:bg-[#003060] text-white font-bold py-1 px-3 rounded-lg text-[10px] font-mono cursor-pointer"
+                >
+                  Submit Response
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -410,12 +501,12 @@ export default function Page12_22({ onNavigate }: { onNavigate?: (pageNum: numbe
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch pt-1">
           <div className="space-y-4 flex flex-col justify-between">
             <div className="space-y-1">
-              <span className="text-[9px] uppercase font-mono font-bold tracking-widest text-[#FF6600]">Unit 1 • Topic 4 Diagnostics</span>
+              <span className="text-[9px] uppercase font-mono font-bold tracking-widest text-[#FF6600]">Unit 1 • Coursework Core Closing</span>
               <h2 className="text-base font-display font-bold text-[#004080] uppercase tracking-tight">
-                Interactive Form QRs & Topic 4 Quiz
+                Interactive Form QRs & Unit 1 Closing Exam
               </h2>
               <p className="text-slate-600 text-xs leading-[1.75] font-semibold text-slate-500">
-                Ensure compliance with netiquette protocols and Web 2.0 rules. Scan the QR code to take the quiz, or answer the questions block directly on this sheet.
+                To validate educational accomplishments for Unit 1, scan the official quiz systems or answer the interactive checklist questions directly below.
               </p>
             </div>
 
@@ -438,25 +529,157 @@ export default function Page12_22({ onNavigate }: { onNavigate?: (pageNum: numbe
             </div>
           </div>
 
-          <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-5 space-y-4 flex flex-col justify-between">
-            <span className="text-xs font-bold text-[#004080] uppercase tracking-wider block border-b border-slate-200 pb-1.5 flex items-center gap-1.5">
-              <ShieldAlert className="w-4.5 h-4.5 text-[#004080]" />
-              Conduct Questionnaire — Topic 4
+          <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-4.5 space-y-3.5 flex flex-col justify-between">
+            <span className="text-sm font-bold text-[#004080] uppercase tracking-wider block border-b border-slate-200 pb-1 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <BrainCircuit className="w-4.5 h-4.5 text-[#004080]" />
+                Unit 1 Comprehensive Exam
+              </span>
+              {p24_verified && (
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-mono font-bold animate-pulse">
+                  Graded
+                </span>
+              )}
             </span>
 
-            <div className="space-y-3.5 text-[11px] text-slate-705 font-semibold">
-              <div className="p-3 bg-white rounded-lg border border-slate-100 shadow-3xs">
-                <p className="font-bold text-slate-800 mb-1">Q1: What defines the term Netiquette (Netiquette)?</p>
-                <div className="text-slate-500 font-semibold pl-2">
-                  <span className="text-[#004080] font-black">✔ The body of courtesy rules and digital civic guidelines adapted for professional online communication.</span>
+            <div className="space-y-2.5 text-[10.5px] font-semibold leading-normal flex-1 flex flex-col justify-between">
+              <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+                {/* Q1 */}
+                <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-3xs space-y-1.5">
+                  <p className="font-bold text-slate-800 text-[10.5px]">Q1: What defines the term Netiquette (Netiquette)?</p>
+                  <div className="grid grid-cols-3 gap-1.5 text-[9.5px]">
+                    {[
+                      { id: "A", text: "Automated router rules" },
+                      { id: "B", text: "Courteous civic guidelines", isCorrect: true },
+                      { id: "C", text: "Database code tags" }
+                    ].map((opt) => {
+                      const isSelected = p24_q1 === opt.id;
+                      let btnClass = "border py-1 px-1.5 rounded text-left transition-all duration-150 font-medium ";
+                      if (p24_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-55 bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        else btnClass += "opacity-50 text-slate-400 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-650";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p24_verified} onClick={() => setP24_q1(opt.id)} className={btnClass + " cursor-pointer text-ellipsis overflow-hidden whitespace-nowrap"}>
+                          <span>{opt.id}) {opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Q2 */}
+                <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-3xs space-y-1.5">
+                  <p className="font-bold text-slate-800 text-[10.5px]">Q2: Redesigning social spaces, netiquette is defined in?</p>
+                  <div className="grid grid-cols-4 gap-1.5 text-[9px]">
+                    {[
+                      { id: "A", text: "1. Tool select" },
+                      { id: "B", text: "2. Customization" },
+                      { id: "C", text: "3. Rule definition", isCorrect: true },
+                      { id: "D", text: "4. Peer Share" }
+                    ].map((opt) => {
+                      const isSelected = p24_q2 === opt.id;
+                      let btnClass = "border py-1 px-1.5 rounded text-left transition-all duration-150 font-medium ";
+                      if (p24_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-55 bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        else btnClass += "opacity-50 text-slate-400 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-650";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p24_verified} onClick={() => setP24_q2(opt.id)} className={btnClass + " cursor-pointer text-ellipsis overflow-hidden whitespace-nowrap"}>
+                          <span>{opt.id}) {opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Q3 */}
+                <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-3xs space-y-1.5">
+                  <p className="font-bold text-slate-800 text-[10.5px]">Q3: Who formulated Connectivism learning theory?</p>
+                  <div className="grid grid-cols-3 gap-1.5 text-[9.5px]">
+                    {[
+                      { id: "A", text: "Lev Vygotsky" },
+                      { id: "B", text: "George Siemens", isCorrect: true },
+                      { id: "C", text: "Jean Piaget" }
+                    ].map((opt) => {
+                      const isSelected = p24_q3 === opt.id;
+                      let btnClass = "border py-1 px-1.5 rounded text-left transition-all duration-150 font-medium ";
+                      if (p24_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-55 bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        else btnClass += "opacity-50 text-slate-400 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-650";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p24_verified} onClick={() => setP24_q3(opt.id)} className={btnClass + " cursor-pointer text-ellipsis overflow-hidden whitespace-nowrap"}>
+                          <span>{opt.id}) {opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Q4 */}
+                <div className="p-2 bg-white rounded-lg border border-slate-100 shadow-3xs space-y-1.5">
+                  <p className="font-bold text-slate-800 text-[10.5px]">Q4: What is the main characteristic of Web 2.0?</p>
+                  <div className="grid grid-cols-3 gap-1.5 text-[9.5px]">
+                    {[
+                      { id: "A", text: "Read-only files" },
+                      { id: "B", text: "Dynamic co-creation", isCorrect: true },
+                      { id: "C", text: "Local storage only" }
+                    ].map((opt) => {
+                      const isSelected = p24_q4 === opt.id;
+                      let btnClass = "border py-1 px-1.5 rounded text-left transition-all duration-150 font-medium ";
+                      if (p24_verified) {
+                        if (opt.isCorrect) btnClass += "bg-emerald-55 bg-emerald-50 border-emerald-500 text-emerald-800 font-bold";
+                        else if (isSelected) btnClass += "bg-rose-50 border-rose-400 text-rose-800";
+                        else btnClass += "opacity-50 text-slate-400 border-slate-100";
+                      } else {
+                        btnClass += isSelected ? "border-[#004080] bg-[#004080]/15 text-[#004080] font-bold" : "border-slate-200 hover:bg-slate-50 text-slate-650";
+                      }
+                      return (
+                        <button key={opt.id} disabled={p24_verified} onClick={() => setP24_q4(opt.id)} className={btnClass + " cursor-pointer text-ellipsis overflow-hidden whitespace-nowrap"}>
+                          <span>{opt.id}) {opt.text}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
-              <div className="p-3 bg-white rounded-lg border border-slate-100 shadow-3xs">
-                <p className="font-bold text-slate-800 mb-1">Q2: In which phase of educational social platform redesign are these rules defined?</p>
-                <div className="text-slate-500 font-semibold pl-2">
-                  <span className="text-[#004080] font-black">✔ Phase 3: Setting Administrative Protocols and Written Netiquette Standards.</span>
-                </div>
+              {/* Action Bar */}
+              <div className="flex gap-2 justify-end pt-2 border-t border-slate-150 select-none">
+                {p24_verified ? (
+                  <button
+                    onClick={() => {
+                      setP24_q1(null); setP24_q2(null); setP24_q3(null); setP24_q4(null);
+                      setP24_verified(false);
+                    }}
+                    className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-1 px-3 rounded-lg text-[9.5px] shadow-3xs cursor-pointer font-mono"
+                  >
+                    Reset Exam
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (p24_q1 && p24_q2 && p24_q3 && p24_q4) {
+                        setP24_verified(true);
+                      } else {
+                        alert("Please select answers to all 4 questions first!");
+                      }
+                    }}
+                    className="bg-[#004080] hover:bg-[#003060] text-white font-bold py-1 px-3 rounded-lg text-[9.5px] shadow-3xs cursor-pointer font-mono"
+                  >
+                    Submit & Grade
+                  </button>
+                )}
               </div>
             </div>
           </div>
