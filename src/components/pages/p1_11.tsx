@@ -113,7 +113,7 @@ export default function Page1_11({ onNavigate }: { onNavigate?: (pageNum: number
           {/* Generated Cover Illustration Banner - MUCH LARGER as requested */}
           <div className="w-[360px] md:w-[480px] shrink-0 border border-slate-200/80 shadow-lg rounded-2xl p-2.5 bg-white/90 backdrop-blur hover:shadow-xl transition-all duration-300">
             <img 
-              src="/src/assets/images/cover_illustration_1780530339788.png"
+              src="/imagen_cover.png"
               alt="E-Learning Trends and Challenges Cover Illustration"
               className="w-full h-auto max-h-[240px] rounded-xl object-cover hover:scale-[1.01] transition-transform cursor-pointer"
               referrerPolicy="no-referrer"
