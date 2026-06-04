@@ -29,6 +29,14 @@
 
 /* Page Break simulation for printing */
 @media print {
+  @page {
+    size: landscape;
+    margin: 0;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   .sheet-container {
     background: white !important;
     padding: 0 !important;
@@ -36,9 +44,28 @@
   }
   .page-break {
     page-break-after: always;
+    break-after: page;
   }
   .no-print {
     display: none !important;
   }
+}
+
+/* SYSTEM-WIDE SCALING OF COMPENDIUM FONT PARADIGM FOR HIGHER ACCESSIBILITY & READABILITY */
+@media screen, print {
+  /* Scale up individual text sizing utilities inside pages to avoid microscales */
+  section[id^="page-"] .text-\[8px\] { font-size: 10px !important; }
+  section[id^="page-"] .text-\[8\.5px\] { font-size: 10.5px !important; }
+  section[id^="page-"] .text-\[9px\] { font-size: 11px !important; }
+  section[id^="page-"] .text-\[9\.5px\] { font-size: 11.5px !important; }
+  section[id^="page-"] .text-\[10px\] { font-size: 12.2px !important; }
+  section[id^="page-"] .text-\[10\.5px\] { font-size: 12.8px !important; }
+  section[id^="page-"] .text-\[11px\] { font-size: 13.2px !important; }
+  section[id^="page-"] .text-\[11\.5px\] { font-size: 13.8px !important; }
+  section[id^="page-"] .text-\[12px\] { font-size: 14.2px !important; }
+  section[id^="page-"] .text-xs { font-size: 13.8px !important; }
+  section[id^="page-"] .text-sm { font-size: 15.5px !important; }
+  section[id^="page-"] .text-base { font-size: 17.5px !important; }
+  section[id^="page-"] .text-lg { font-size: 19.5px !important; }
 }
 

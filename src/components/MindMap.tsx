@@ -3,105 +3,117 @@ import { Play, Layers, Award, Sparkles, Server, Compass, CheckCircle } from "luc
 
 interface MindMapProps {
   unitId: "unit-1" | "unit-2";
+  compact?: boolean;
 }
 
-export default function MindMap({ unitId }: MindMapProps) {
+export default function MindMap({ unitId, compact = false }: MindMapProps) {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
-  // SVG-based responsive structured conceptual diagram / mind map
+  // Styles based on 'compact' mode
+  const outerPadding = compact ? "p-2 my-0.5" : "p-4 my-4";
+  const headerMargin = compact ? "mb-1.5" : "mb-6";
+  const centralNodePadding = compact ? "p-2.5" : "p-4";
+  const nodeGap = compact ? "gap-2" : "gap-4";
+  const innerFlexGap = compact ? "gap-3" : "gap-6";
+  const branchPadding = compact ? "p-2" : "p-3.5";
+  const subGridGap = compact ? "gap-1" : "gap-2";
+  const subBoxPadding = compact ? "py-1 px-1.5" : "p-2";
+  const subBoxText = compact ? "text-[8.5px]" : "text-[10px]";
+
   if (unitId === "unit-1") {
     return (
-      <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 my-4 relative overflow-hidden">
+      <div className={`w-full bg-slate-50 border border-slate-100 rounded-2xl relative overflow-hidden ${outerPadding}`}>
         <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-50 text-[10px] font-semibold text-blue-700">
-          <Sparkles className="w-3 h-3" /> Diagrama Unificado
+          <Sparkles className="w-3 h-3" /> Diagrama
         </div>
-        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-6 flex items-center gap-1.5">
-          <Layers className="w-3.5 h-3.5 text-unemi-blue" /> Mapa Mental Conceptual Especializado
-        </h4>
+        {!compact && (
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-6 flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-unemi-blue" /> Mapa Mental Conceptual Especializado
+          </h4>
+        )}
 
-        {/* Responsive Flex / SVG Hybrid layout to ensure it looks amazing and doesn't clip on small displays */}
-        <div className="flex flex-col md:flex-row gap-6 items-stretch justify-between relative">
+        <div className={`flex flex-col md:flex-row items-stretch justify-between relative ${innerFlexGap}`}>
           {/* Central Root Node */}
-          <div className="flex-1 flex items-center justify-center md:max-w-[200px]">
+          <div className="flex-1 flex items-center justify-center md:max-w-[150px]">
             <div 
-              className={`w-full text-center p-4 rounded-xl border-2 transition-all duration-300 shadow-md ${
-                hoveredNode === "root" ? "bg-blue-900 text-white border-blue-900 scale-105" : "bg-white text-unemi-blue border-unemi-blue"
+              className={`w-full text-center rounded-xl border-2 transition-all duration-300 shadow-md ${centralNodePadding} ${
+                hoveredNode === "root" ? "bg-blue-900 text-white border-blue-900 scale-102" : "bg-white text-unemi-blue border-unemi-blue"
               }`}
               onMouseEnter={() => setHoveredNode("root")}
               onMouseLeave={() => setHoveredNode(null)}
             >
-              <div className="bg-slate-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 text-unemi-orange">
-                <Compass className="w-5 h-5" />
+              <div className={`bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-1 text-unemi-orange ${compact ? "w-7 h-7" : "w-10 h-10"}`}>
+                <Compass className={compact ? "w-4 h-4" : "w-5 h-5"} />
               </div>
-              <h5 className="font-bold text-xs uppercase leading-tight">ENTORNOS VIRTUALES Y TICs</h5>
-              <p className="text-[9px] text-slate-500 mt-1">Ecosistema Global</p>
+              <h5 className="font-bold text-[10.5px] uppercase leading-tight">ENTORNOS VIRTUALES Y TICs</h5>
+              <p className="text-[8px] text-slate-500">Ecosistema Global</p>
             </div>
           </div>
 
           {/* Connectors & Branches */}
-          <div className="flex-[2] flex flex-col gap-4">
+          <div className={`flex-[2] flex flex-col ${nodeGap}`}>
             {/* Branch 1 */}
-            <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="w-2 h-2 rounded-full bg-unemi-blue" />
-                <h6 className="font-semibold text-xs text-unemi-blue uppercase tracking-wide">1. Rol de las TICs</h6>
+            <div className={`bg-white rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow ${branchPadding}`}>
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-unemi-blue" />
+                <h6 className="font-semibold text-[10.5px] text-unemi-blue uppercase tracking-wide">1. Rol de las TICs</h6>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-unemi-orange">Punto de Vista</span>
-                  Constructivismo Digital
+              <div className={`grid grid-cols-3 ${subGridGap}`}>
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-unemi-orange max-sm:inline">Construcción</span>
+                  Digital
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-unemi-orange">Estudiante</span>
-                  Rol Activo y Central
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-unemi-orange max-sm:inline">Estudiante</span>
+                  Rol Activo
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-unemi-orange">Impacto</span>
-                  Socio-Democratización
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-unemi-orange max-sm:inline">Impacto</span>
+                  Democracia
                 </div>
               </div>
             </div>
 
             {/* Branch 2 */}
-            <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="w-2 h-2 rounded-full bg-unemi-orange" />
-                <h6 className="font-semibold text-xs text-unemi-blue uppercase tracking-wide">2. Plataformas EVA</h6>
+            <div className={`bg-white rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow ${branchPadding}`}>
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-unemi-orange" />
+                <h6 className="font-semibold text-[10.5px] text-unemi-blue uppercase tracking-wide">2. Plataformas EVA</h6>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-unemi-blue">Administración</span>
-                  Estructura LMS
+              <div className={`grid grid-cols-3 ${subGridGap}`}>
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-unemi-blue max-sm:inline">Admin</span>
+                  LMS Moodle
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-unemi-blue">Tecnología</span>
-                  Moodle Institucional
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-unemi-blue max-sm:inline">Esencia</span>
+                  UNEMI
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-unemi-blue">Acceso</span>
-                  Aula Virtual UNEMI
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-unemi-blue max-sm:inline">Acceso</span>
+                  Aula Virtual
                 </div>
               </div>
             </div>
 
             {/* Branch 3 */}
-            <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <h6 className="font-semibold text-xs text-unemi-blue uppercase tracking-wide">3. Web 2.0 Colaborativa</h6>
+            <div className={`bg-white rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow ${branchPadding}`}>
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <h6 className="font-semibold text-[10.5px] text-unemi-blue uppercase tracking-wide">3. Web 2.0 Sinergias</h6>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-emerald-600">Creación</span>
-                  Trabajo Co-creativo
+              <div className={`grid grid-cols-3 ${subGridGap}`}>
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-emerald-600 max-sm:inline">Creación</span>
+                  Blogs / Wikis
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-emerald-600">Almacenamiento</span>
-                  Nube Estructurada
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-emerald-600 max-sm:inline">Espacio</span>
+                  Nube
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                  <span className="font-semibold block text-emerald-600">Sinergia</span>
-                  Inteligencia Colectiva
+                <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                  <span className="font-semibold block text-emerald-600 max-sm:inline">Sinergia</span>
+                  Colectiva
                 </div>
               </div>
             </div>
@@ -113,96 +125,98 @@ export default function MindMap({ unitId }: MindMapProps) {
 
   // Unit 2 Mind Map
   return (
-    <div className="w-full bg-orange-50/40 border border-orange-100 rounded-2xl p-4 my-4 relative overflow-hidden">
+    <div className={`w-full bg-orange-50/40 border border-orange-100 rounded-2xl relative overflow-hidden ${outerPadding}`}>
       <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-orange-50 text-[10px] font-semibold text-orange-700">
-        <Sparkles className="w-3 h-3" /> Diagrama Unificado
+        <Sparkles className="w-3 h-3" /> Diagrama
       </div>
-      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-6 flex items-center gap-1.5">
-        <Layers className="w-3.5 h-3.5 text-unemi-orange" /> Mapa Mental Conceptual Especializado
-      </h4>
+      {!compact && (
+        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-6 flex items-center gap-1.5">
+          <Layers className="w-3.5 h-3.5 text-unemi-orange" /> Mapa Mental Conceptual Especializado
+        </h4>
+      )}
 
-      <div className="flex flex-col md:flex-row gap-6 items-stretch justify-between relative">
+      <div className={`flex flex-col md:flex-row items-stretch justify-between relative ${innerFlexGap}`}>
         {/* Central Root Node */}
-        <div className="flex-1 flex items-center justify-center md:max-w-[200px]">
+        <div className="flex-1 flex items-center justify-center md:max-w-[150px]">
           <div 
-            className={`w-full text-center p-4 rounded-xl border-2 transition-all duration-300 shadow-md ${
-              hoveredNode === "root" ? "bg-orange-600 text-white border-orange-600 scale-105" : "bg-white text-unemi-orange border-unemi-orange"
+            className={`w-full text-center rounded-xl border-2 transition-all duration-300 shadow-md ${centralNodePadding} ${
+              hoveredNode === "root" ? "bg-orange-600 text-white border-orange-600 scale-102" : "bg-white text-unemi-orange border-unemi-orange"
             }`}
             onMouseEnter={() => setHoveredNode("root")}
             onMouseLeave={() => setHoveredNode(null)}
           >
-            <div className="bg-slate-100 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 text-unemi-blue">
-              <Server className="w-5 h-5" />
+            <div className={`bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-1 text-unemi-blue ${compact ? "w-7 h-7" : "w-10 h-10"}`}>
+              <Server className={compact ? "w-4 h-4" : "w-5 h-5"} />
             </div>
-            <h5 className="font-bold text-xs uppercase leading-tight">CIUDADANÍA Y CIBERSEGURIDAD</h5>
-            <p className="text-[9px] text-slate-500 mt-1">Ética e Integridad</p>
+            <h5 className="font-bold text-[10.5px] uppercase leading-tight">CIUDADANÍA Y SEGURIDAD</h5>
+            <p className="text-[8px] text-slate-500">Ética e Integridad</p>
           </div>
         </div>
 
         {/* Connectors & Branches */}
-        <div className="flex-[2] flex flex-col gap-4">
+        <div className={`flex-[2] flex flex-col ${nodeGap}`}>
           {/* Branch 1 */}
-          <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 rounded-full bg-unemi-blue" />
-              <h6 className="font-semibold text-xs text-unemi-blue uppercase tracking-wide">1. Huella Digital</h6>
+          <div className={`bg-white rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow ${branchPadding}`}>
+            <div className="flex items-center gap-1.5 mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-unemi-blue" />
+              <h6 className="font-semibold text-[10.5px] text-unemi-blue uppercase tracking-wide">1. Huella Digital</h6>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-unemi-orange">Persistencia</span>
-                Rastro Permanente
+            <div className={`grid grid-cols-3 ${subGridGap}`}>
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-unemi-orange max-sm:inline">Rastro</span>
+                Permanente
               </div>
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-unemi-orange">Profesional</span>
-                Identidad Académica
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-unemi-orange max-sm:inline">Identidad</span>
+                Social
               </div>
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-unemi-orange">Resguardo</span>
-                Privacidad Proactiva
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-unemi-orange max-sm:inline">Privacidad</span>
+                Proactiva
               </div>
             </div>
           </div>
 
           {/* Branch 2 */}
-          <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 rounded-full bg-unemi-orange" />
-              <h6 className="font-semibold text-xs text-unemi-blue uppercase tracking-wide">2. Ciberseguridad</h6>
+          <div className={`bg-white rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow ${branchPadding}`}>
+            <div className="flex items-center gap-1.5 mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-unemi-orange" />
+              <h6 className="font-semibold text-[10.5px] text-unemi-blue uppercase tracking-wide">2. Ciberseguridad</h6>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-unemi-blue">Acceso</span>
-                MFA y Complejidad
+            <div className={`grid grid-cols-3 ${subGridGap}`}>
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-unemi-blue max-sm:inline">Protección</span>
+                MFA / Contraseñas
               </div>
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-unemi-blue">Amenaza</span>
-                Ingeniería Social
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-unemi-blue max-sm:inline">Amenaza</span>
+                Phishing / Redes
               </div>
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-unemi-blue">Prevención</span>
-                Copias y Backups
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-unemi-blue max-sm:inline">Backups</span>
+                Copias Nube
               </div>
             </div>
           </div>
 
           {/* Branch 3 */}
-          <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 rounded-full bg-indigo-500" />
-              <h6 className="font-semibold text-xs text-unemi-blue uppercase tracking-wide">3. Netiqueta Académica</h6>
+          <div className={`bg-white rounded-xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow ${branchPadding}`}>
+            <div className="flex items-center gap-1.5 mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+              <h6 className="font-semibold text-[10.5px] text-unemi-blue uppercase tracking-wide">3. Netiqueta Académica</h6>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-indigo-600">Tono</span>
-                Respeto sin Mayúsculas
+            <div className={`grid grid-cols-3 ${subGridGap}`}>
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-indigo-600 max-sm:inline">Respeto</span>
+                Sin Mayúsculas
               </div>
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-indigo-600">Formalidad</span>
-                Estructura del Correo
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-indigo-600 max-sm:inline">Tono</span>
+                Formal / Emails
               </div>
-              <div className="p-2 bg-slate-50 rounded-lg text-center text-[10px] text-slate-600 border border-slate-100">
-                <span className="font-semibold block text-indigo-600">Diálogo</span>
-                Resolución Pacífica
+              <div className={`bg-slate-50 rounded-lg text-center border border-slate-100 leading-tight ${subBoxPadding} ${subBoxText}`}>
+                <span className="font-semibold block text-indigo-600 max-sm:inline">Resolución</span>
+                Pacífica
               </div>
             </div>
           </div>

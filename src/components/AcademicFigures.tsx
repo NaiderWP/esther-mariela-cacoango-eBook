@@ -43,13 +43,14 @@ function AcademicFigure({ figureNumber, title, caption, imageSrc, maxHeightClass
 }
 
 // FIGURE 1: ICT Integration
-export function FigureTicIntegration() {
+export function FigureTicIntegration({ maxHeightClass = "max-h-[300px]" }: { maxHeightClass?: string }) {
   return (
     <AcademicFigure
       figureNumber={1}
       title="ICT Integration in Education"
       caption="Conceptual diagram showing the integration of ICT (Information and Communication Technologies) in the educational system. Displays full systemic connectivity representing computers, networks, virtual classrooms, teachers, and students in flat vector style."
       imageSrc="/gra 1.png"
+      maxHeightClass={maxHeightClass}
     />
   );
 }
